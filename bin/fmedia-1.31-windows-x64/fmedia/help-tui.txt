@@ -1,0 +1,31 @@
+fmedia Terminal UI commands:
+
+Key    Command
+--------------
+Space  Play/Pause
+s      Stop
+n      Next track
+p      Previous track
+q      Quit
+h      Show help
+T      a) Save this track from radio.
+       b) Start writing the recording to disk (with --prebuffer).
+
+Right  Seek forward
+Left   Seek backward
+Supported key modifiers:
+  +Alt   medium step
+  +Ctrl  large step
+
+Up     Volume up
+Down   Volume down
+m      Mute
+
+i      Show tags
+D      Delete file from disk
+
+d      Remove the track from playlist
+x      Remove the track from playlist and play next track
+E      Remove "dead" items from playlist
+L      Save current playlist to the system's temporary directory
+r      "Choose random track" setting: on/off

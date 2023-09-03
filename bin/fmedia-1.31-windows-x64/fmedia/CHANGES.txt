@@ -1,0 +1,1417 @@
+-----------------
+HISTORY OF FMEDIA
+-----------------
+
+ "+" - new feature
+ "*" - change, update or a small improvement
+ "-" - bugfix
+ "!" - broken compatibility
+
+
+fmedia v1.31 - May 21, 2023
+
+ + --http-ctl="<IP>": Enable HTTP server for handling remote commands
+   This option allows fmedia to be remotely controlled using web browser.
+   Server address is "http://<IP>:7314/".
+   Supported commands:
+     "POST /api/pause": Pause
+     "POST /api/unpause": Unpause
+     "POST /api/next": Play next track
+
+ + --playlist-heal="": Auto-correct the paths to files inside a .m3u playlist
+ * TUI: colored output
+ * GUI: compress auto-loaded playlists with zstd ("listN.m3uz")
+ * Recording: support --dev=... together with --record
+ * Restore support for old AMD64 CPU (without SSE4.2 support)
+ - Recording: finalize the output file while recording after --globcmd=stop
+ - .mp4(AAC) write: don't write incorrect VBR bitrate & sample rate values
+ - .ogg write: fix (v1.30 bug)
+
+
+fmedia/Android v0.12 - May 6, 2023
+
+ * compress auto-loaded playlists with zstd
+   ("/storage/fmedia/list1.m3uz")
+ + playlist view: show artist-title-duration info
+ + "File: Quick Move" command
+ - .mp4(AAC) write: don't write incorrect VBR bitrate & sample rate values
+
+
+fmedia/Android v0.11 - Mar 19, 2023
+
+ + Convert: ALAC decoder
+ + Convert: "Sample Rate" setting
+ * Convert: Auto-Trash: remove item from list
+ + Recording: new setting "Encoder (AAC-LC | AAC-HE | AAC-HEv2 | FLAC)"
+ + UI: Playlist Save: choose output directory
+ * UI: Show Tags: copy tag's value to clipboard on click
+
+
+fmedia v1.30 - Feb 19, 2023
+
+ + --playback-buffer=INT: Length (in msec) of the playback buffer
+ *! move mod/core.so -> core.so (Core isn't really a module)
+ * core: optimize fmedia.conf so that it's easier to embed fmedia into other projects
+   (it's no longer required to declare a module in fmedia.conf)
+ * --print-time: don't require '--debug' to get per-filter timings
+ * .mp3, .ape, .wv read: id3v1 codepage
+ * Linux: use libgio directly to trash files
+ * Vorbis write: skip 'picture' tag
+ * update to libFLAC-1.4.2
+ - PulseAudio: playback could hang if there's a problem with device
+ - .mp3 copy: copy id3v1 tag (v1.27.2 bug)
+ - .ogg write: fix hanging on trying to write a large packet (v1.29 bug)
+ - .ogg read: inaccurate seeking (v1.29 bug)
+ - GUI/Linux: incorrect audio-conversion settings were written into fmedia-user.conf
+
+
+fmedia/Android v0.10 - Jan 14, 2023
+
+ + Record via AAudio (native audio interface since Android 8).  Settings:
+   + Buffer Length
+   + Gain/Attenuate filter
+   + Autostop timer
+ + New settings:
+   + "Show Audio Info in Title"
+   + "Remove Track From Playlist On Error"
+ *! Set "Trash" directory relative to storage mount-point
+ * List Save: warn when file already exists
+
+
+fmedia/Android v0.9 - Dec 30, 2022
+
+ + Convert: AAC decode; FLAC decode/encode; .flac write
+ + Convert: new settings:
+   + "Output Directory"
+   + "Move Input File to Trash"
+   + "Set To Current"
+   + "Add New File to Playlist"
+ + New setting: "App Data Directory"
+ + Open playlists (.m3u) from "Explorer"
+   * Remove command "List: Load"
+ + "List: Save" now works on old devices too
+ + New command: "List: Switch L1/L2"
+ + New command: "List: Add Current to L2"
+
+
+fmedia/Android v0.8 - Dec 18, 2022
+
+ + .mp3 -> .m4a(AAC-LC) conversion
+   (~1.5sec/min on modern arm64 phone)
+   (~7sec/min on old arm phone)
+ + .m4a -> .m4a stream copy
+ * .mp3 copy: copy id3v2+id3v1 tags
+ + new setting:
+   Playback: "Remove Track From Playlist After I Tap Next"
+
+
+fmedia/Android v0.7 - Dec 3, 2022
+
+ + .mp3 -> .mp3 cut/copy via "File: Cut" menu command
+ * Remove track from playlist after playback error
+    and start playing next track
+
+
+fmedia/Android v0.6 - Nov 14, 2022
+
+ + Dark Theme
+ + Read tags from .ogg, .opus, .flac
+ + "Auto-Skip Audio" setting:
+   Automatically skip audio at the beginning of each new track
+ + Show additonal file meta info:
+   (format, size, length, date)
+ + "Codepage for Non-Unicode Tags" setting
+ + "Don't Read Tags" setting
+   (to neutralize meta info reading overhead in current implementation)
+ - "List: Load" didn't work
+
+
+fmedia/Android v0.5 - Oct 30, 2022
+
+ + Show artist & title info for the currently playing .mp3/.mp4/.m4a file
+   Non-Unicode codepage is win1252
+ + "File: Show Tags" menu command
+   Show all tags for the currently playing .mp3/.mp4/.m4a file
+ * Auto-save/auto-load large playlist faster by using native code
+ * Don't rewrite playlist on sdcard unless modified
+ * random: logically split playlist into 2 chunks for better UXP
+
+
+fmedia/Android v0.4 - Oct 16, 2022
+
+ * Normalize all graphical elements
+ + File Explorer supports all SD-cards available on the system
+ + "List Save" menu command - save current playlist to a file
+ + "List Load" menu command - load playlist from file
+ + New settings:
+   + "Disable Lock-Screen Notification"
+   + "Trash directory"
+   + "Encoder bitrate"
+ * "File Delete" moves files to Trash directory by default
+ * Update the current playback progress on notification
+
+
+fmedia v1.29.1 - Sep 25, 2022
+
+ * GUI: "Analyze & Show PCM Info" supports .cue tracks
+ + GUI/Windows: Record dialog: "Enable Dynamic Audio Normalizer" setting
+ - GUI/Windows: Record dialog: audio format settings didn't work
+ * GUI/Windows: save/restore the settings for Record & Convert dialogs
+ - GUI/Windows: couldn't set an empty setting value in Record & Convert dialogs
+ - GUI/Windows: Convert: seeking on .mp3 didn't work (v1.28 bug)
+ - core: user config settings from fmedia-user.conf didn't work (v1.25.3beta bug)
+ * "--until" now works with radio stream sources
+ - .aac read: fix crash
+
+
+fmedia v1.29 - Sep 5, 2022
+
+ + new "fmedia.conf" settings:
+   + "remove_if_unknown_format":
+     Auto-remove playlist item if the file format is not supported
+   + "remove_if_no_source":
+     Auto-remove playlist item if source doesn't exist
+ * --random: logically split playlist into 2 chunks for better UXP
+   (now the next song is likely further from the current one in playlist)
+ - HTTP: couldn't play some radio streams
+   (previously we relied at least on "Connection:close")
+ - "--mix" didn't work
+ - .flac read: couldn't complete seek request in some cases
+ - .ogg --stream-copy: fix incorrect positioning
+ - .ogg/.opus write: corrupted data (v1.28 bug)
+   (some packets were being skipped)
+ - GUI: fix Next/Prev on inactive playlist
+
+
+fmedia v1.28 - Jun 18, 2022
+
+ + TUI: new commands:
+    E: Remove "dead" items from playlist
+    L: Save current playlist to the system's temporary directory
+    r: "Choose random track" setting: on/off
+    x: Remove the track from playlist and play next track
+ * UI: react faster to seek requests
+ * GUI: use separate language files
+ + GUI: Italian language
+ - GUI: "List->Read Meta Tags" didn't work
+ * Windows: minimum required version is now Vista
+ * .mp3 --stream-copy: improve seeking accuracy
+ * .cue: support for all containers (except .avi and .caf)
+
+
+fmedia v1.27.4 - May 31, 2022
+
+ * support "--include/--exclude" when creating playlist from directory
+ - .avi(AAC, PCM), .mkv(MP3) read didn't work
+ - .ogg read: some packets could be skipped
+ - .ogg(Opus, Vorbis) write: correct output data and granule position for the first packets
+ * .ogg(FLAC): support seeking
+ * .caf(PCM) read: faster processing
+ - FLAC decode: fix crash after seek on bad .flac files
+
+
+fmedia v1.27.3 - May 15, 2022
+
+ * playback: faster audio device open (reuse) on track switch
+    with Next/Previous commands for ALSA, PulseAudio, WASAPI
+ * support playback with '--dynanorm'
+ - ALSA playback: some data could be skipped when seeking or starting next track
+ * PulseAudio: don't hang after broken connection with server
+ - PulseAudio playback: fix crash after Stop/Next/Previous commands
+ - mp3 seek didn't work sometimes
+ - mp3 with --stream-copy: fix;  enable ".mp3 --stream-copy --meta=..."
+ - vorbis playback: skipped some data for network stream input
+ - playback with --random: playback could be incorrectly stopped by "too many consecutive errors" protection
+ - recording: try to open audio device with the user-specified format
+    (--format/--rate/--channels options) and apply audio conversion only if it fails
+ * GUI/GTK: Explorer tab: add and play only 1 selected file on double-click
+
+
+fmedia v1.27.2 - Apr 20, 2022
+
+ - .cue read: fix
+ - mp3 read: couldn't parse Xing tag sometimes
+ - mp3 decode: fix audio glitches after seek
+ - mp3 with --stream-copy: improve accuracy
+ *! disable ".mp3 --stream-copy --meta=..."
+
+
+fmedia v1.27.1 - Apr 2, 2022
+
+ - fix crash on file conversion
+
+
+fmedia v1.27 - Mar 31, 2022
+
+ + '--edit-tags': Add/Modify file's meta tags in-place
+   Supported formats and tags: .mp3(ID3v2+ID3v1)
+   Example:
+     fmedia --edit-tags --meta='artist=ARTIST;title=TITLE' ./file.mp3
+
+ + '--meta-from-filename=TEMPLATE': Specify template for auto-tagging from input file name
+   Example how to set artist, track number and title meta tags from file name:
+     fmedia --edit-tags --meta-from-filename='$artist - $tracknumber. $title' './Cool Artist - 04. Best Song.mp3'
+
+ + GUI/Linux: edit .mp3 tags via "File"->"Edit Meta Data"
+ + GUI/Linux: "List"->"Scroll To Current"
+ * TUI: "delete file": move to Trash by default
+   New configuration setting: "tui.file_delete_method"
+ - Windows: fix wildcard input
+ - fix .mp3 format detection in files without ID3v2 tag
+ - MPEG/Layer3: fix audio glitches on seek
+
+
+fmedia v1.26.1 - Mar 14, 2022
+
+ - fix complex filter chain use-cases such as "--start-dblevel/--stop-dblevel"
+    and possibly some other cases
+ - GUI/Linux: fix file drop
+
+
+fmedia v1.26 - Mar 6, 2022
+
+ Includes all changes from v1.25
+
+
+fmedia v1.25.3beta - Jan 28, 2022
+
+ - "-o @stdout.wav"
+ - core: "codepage" config option
+ - core: pcm channels conversion
+ - .mp3 encode: mono/interleaved source
+
+
+fmedia v1.25.2beta - Dec 15, 2021
+
+ * GUI(Linux): parallel conversion; display the progress
+ *! Rename --out-copy=cmd -> --out-copy-cmd.  A command-line switch with an optional value was a design mistake.
+
+
+fmedia v1.25.1beta - Nov 27, 2021
+
+ * audio capture: don't delete the recorded file after audio device failure
+ * WASAPI playback: switch to new default device after the current device goes offline
+ * playlist: don't activate next track after audio device error
+ - audio playback: "--dev=N" didn't work when format conversion is necessary
+ - WASAPI capture: exclusive mode didn't work
+ - GUI(Linux): close subprocesses correctly
+ - Windows: finalize the file being recorded after Ctrl+C
+
+
+fmedia v1.25beta - Nov 16, 2021
+
+ + GUI(Linux): file explorer tab: explore files on disk directly from fmedia
+    and add files to playlist without drag-n-drop from file manager app
+ + GUI(Linux): "gui.editor_path" conf option
+ * GUI: on exit, don't rewrite m3u playlist files unless necessary
+ - .ogg(FLAC): couldn't read some files
+ - .aac read: "--stream-copy -o .mp4" produced unreadable mp4 file
+
+
+fmedia v1.24.1 - May 17, 2021
+
+ - capture stream didn't work with "--dev-capture=0 --dev-loopback=N"
+
+
+fmedia v1.24 - Apr 10, 2021
+
+ + .mkv: support Opus;  support .webm;  support seeking (slightly inaccurate)
+ + .mkv(Opus) -> .ogg copy: "fmedia f.mkv -o f.ogg --stream-copy"
+ + .cue: support .mp4/.mkv/.mp3
+ + .avi: support "pcm" codec
+ + GUI(Linux): "File->Delete From Disk": move to Trash by default
+ - .mkv: crash when reading tags
+ - Opus decode: fix "clicks" on tracks changing;  accurate positioning
+
+
+fmedia v1.23.1 - Mar 3, 2021
+
+ - .ogg read: fix (v1.23 bug)
+ - GUI (Linux): youtube downloader: save/restore settings for format and output directory
+
+
+fmedia v1.23 - Feb 25, 2021
+
+ + Windows: record from capture and loopback device in parallel into separate files:
+   "--record --dev-capture=N --dev-loopback=N -o rec$counter.wav"
+ + GUI (Linux): Help->QuickCommand: dialog with all menu commands in one list
+ + GUI (Linux): File->RenameFile: rename/move a file on disk
+ + .caf read: support pcm-le data
+ * .mkv read: couldn't read some files
+ - .mp4 read/write: fix (v1.22 bug)
+ - GUI (Linux): Convert: didn't copy meta data from source
+ - core: --mix didn't work
+ - core: didn't work on old Windows (v1.19 bug)
+ - core: didn't truncate output files when '--overwrite' is used (v1.16 bug)
+
+
+fmedia v1.22 - Jan 25, 2021
+
+ + GUI (Linux): "Convert" dialog with editable conversion properties and hotkeys for marking Start/Stop position
+ + GUI (Linux): window for log messages
+ + .mp4 read: support .mov
+ + detect input file format from file data
+
+
+fmedia v1.21 - Dec 29, 2020
+
+ + GUI (Linux): File->"Download from YouTube" (via /usr/bin/youtube-dl)
+ - core: --gain didn't work (v1.20 bug)
+
+
+fmedia v1.20 - Oct 9, 2020
+
+ + --auto-attenuate: Automatically reduce the volume of loud tracks
+ + new --globcmd commands: next, pause, unpause
+ + tui: ability to pause/unpause recording with 'Space' key
+ + GUI: "Repeat: None/Track/All"
+ + help.txt: Indonesian translation
+ - GUI-GTK: fix incorrect behaviour on Play/Pause event
+
+
+fmedia v1.19 - Aug 22, 2020
+
+ + Pulse: support recording
+ + OSS: support recording
+ * --capture-buffer argument: all audio modules now support it
+ - "-o .ogg" command line didn't work (v1.13 bug)
+ - .m4a write: couldn't create file from source file with an invalid frame
+
+
+fmedia v1.18 - Jul 4, 2020
+
+ + Pulse: support 8-bit playback
+ + help.txt: Spanish translation
+ * core: skip unknown modules in fmedia-user.conf
+ * file.in, file.out: can use thread pool for asynchronous I/O
+ - --split: .mp3 output: corrupted first frame
+ - .raw: reading didn't work
+ - ID3v2 read: fix parsing frame data with 'unsync' flag
+ - .flac read: couldn't skip corrupted meta block
+ * use BSD 2-Clause License
+
+
+fmedia v1.17 - Apr 30, 2020
+
+ + GUI: remember the current active track and playlist scroll position
+ + GUI (Linux): mark the currently playing track
+ + --capture-buffer argument - Length (in msec) of the capture buffer (WASAPI, ALSA)
+ - Linux: core.so: don't use glibc 2.29
+
+
+fmedia (Android) v0.3 - Mar 15, 2020
+
+ + Record audio button
+ + setting: Show 'Record' Button
+ + setting: Directory for Recordings
+ + save/restore playlist scroll position
+
+
+fmedia v1.16 - Mar 8, 2020
+
+ + GUI: new command: List -> Read Meta Tags
+ + GUI (Windows): "file_delete_method" configuration setting
+ + queue: stop playback after many consecutive errors
+ * cue: support INDEX value with 'minutes' value 100 and higher
+ - GUI (Windows): invalid filename was added to playlist after recording (v1.11 bug)
+
+
+fmedia v1.15 - Feb 2, 2020
+
+ + Linux: support JACK capture
+ + Linux: disable system sleep timer while playing
+ * Linux: automatically use ALSA output when Pulse isn't installed
+   e.g. "libpulse.so.0" is not found
+
+ * --listdev is more reliable
+   Show capture devices list even if playback devices list couldn't be shown
+
+ - .m4a write: .m4a(AAC) files created by fmedia couldn't be opened
+     by other players, e.g. VLC (v1.10 bug)
+   fmedia can read those files with no problems.
+
+ *! config: don't override "output" if it's already initialized
+    e.g. for this configuration:
+
+    output "pulse.out"
+    output "alsa.out"
+
+    Pulse (the first one) will be used.
+
+
+fmedia (Android) v0.2 - Jan 7, 2020
+
+ + GUI: save/restore the current path in explorer
+ + GUI: "Add URL" dialog
+ + GUI: Filter tracks in playlist
+ + GUI: Settings dialog
+ + GUI: main menu with commands like "Delete File", "Clear List" and others
+ * GUI: reorder UI controls
+
+
+fmedia v1.14 - Jan 5, 2020
+
+ + .caf reader (AAC, ALAC) (no seeking)
+ + @stdin: support seeking forward, which is required by several file formats
+ - GUI: Windows: "Sort: Random" didn't work
+
+
+fmedia (Android) v0.1 - Dec 25, 2019
+
+ The first release for Android.  Install from .apk.
+ + Plays local files or directories
+ + Very simple UI
+ + Control buttons on notification bar
+
+
+fmedia v1.13 - Nov 9, 2019
+
+ + Create a playlist file (.m3u8) from directory
+ + GUI: "Sort: Random"
+ + GUI-GTK: support multiple tabs
+ - GUI-GTK: drag'n'drop didn't work in Ubuntu
+
+
+fmedia v1.12.1 - Oct 12, 2019
+
+ + help.txt: French translation
+
+
+fmedia v1.12 - Sep 15, 2019
+
+ + GUI: "Show Media Info": add file size, file date, audio info
+ - GUI: redraw items after tab switch for a large playlist
+ - GUI: "Show File in Explorer" didn't work if the entry was selected by "Selection Follows Cursor"
+ - GUI: crash on closing playlist (v1.2 bug)
+ * ID3v1 read: skip spaces at the end of tag fields
+ - --dynanorm: crash or error on stop command during playback
+ - core: fix crash or mono->stereo channel conversion (v1.11 bug)
+ * queue: play next track after read/decode error
+ + file.stdout: add "buffer_size" config setting
+ - file input: random seek error (v1.9 bug)
+ - Linux: core.so: don't use glibc 2.29
+ * log: print input file name for error/info messages
+
+
+fmedia v1.11 - Aug 27, 2019
+
+ + support multi-channel (5.1, 7.1) conversion
+ + FLAC-OGG: read FLAC in OGG container (radio streams are also supported)
+ + --split=TIME: Split audio by equal time intervals (.wav input only)
+ + file output: new "$counter" variable for file name
+ * queue: playlist save: write to a file safely
+ - GUI: Linux: update UI on radio meta change
+ * Linux: don't use glibc 2.29 (fix binary compatibility with older OS)
+ - Windows: opening wildcard file names didn't work (v1.10 bug)
+
+
+fmedia v1.10.1 - Jul 18, 2019
+
+ - GUI: windows: convert: empty text in 'output' combobox (v1.10 bug)
+ - GUI: windows: convert: couldn't add files for conversion (v1.10 bug)
+ - GUI: linux: auto-apply volume for the next track
+ - queue: crash on parallel conversion (v1.3 bug)
+ - file: random crash (v1.9 bug)
+ - "--channels=left" didn't work (v0.34 bug)
+
+
+fmedia v1.10 - Jul 8, 2019
+
+ + GUI: restore list's column width on startup
+ + GUI: Windows: convert.output is a dropdown list; restore on startup
+ + GUI: Linux: "Convert" command (no custom settings)
+ + GUI: Linux: "Show Media Info" command
+ + GUI: Linux: support several settings from fmedia.conf (seek_step, seek_leap, autosave_playlists)
+ * GUI: Linux: multi-select "Open File" dialog
+ - GUI: Linux: drag-n-drop didn't work if a filename contained special characters
+ + TUI: print information about video codec and resolution: .mp4 (H.264), .mkv (H.264, H.265)
+
+ + --help: Added German translation
+ * queue: shrink memory usage of playback items by 70%
+ - Pulse, DirectSound: some audio data could be lost after playback is paused
+ - Pulse: playback could hang after track has finished
+
+
+fmedia v1.9 - June 8, 2019
+
+ * GUI-GTK: show meta info in playlist properly
+ + GUI-GTK: "Show File in Explorer"; more commands in Help menu
+
+ + --help: translated some text into Russian
+ * net: support "audio/ogg" Content-Type
+ * TUI: Windows: determine terminal window width and adjust playbar
+ - direct-sound: fix --dev= and --dev-capture= arguments
+ - core: crash after decoder has failed to parse audio info
+ - Pulse: crash on --list-dev
+
+
+fmedia v1.8 - May 1, 2019
+
+ * .aac read: Don't decode audio while seeking (almost instant seeking)
+ + .aac write with --stream-copy from .aac source
+ + GUI: Windows: "Show Favorites", "Add to Favorites", "Selection Follows Cursor" commands
+ + GUI: Windows: Save/restore "Random" and "Selection Follows Cursor" checked state
+ + GUI: Linux: New commands, save/restore window position
+
+
+fmedia v1.7 - Apr 5, 2019
+
+ + GUI: linux: a simple GUI based on GTK+v3
+ * linux: use Pulse Audio output by default
+   ALSA can't be used out-of-the-box on some linux distributions
+    where PA service prevents the device from opening by fmedia
+
+
+fmedia v1.6 - Mar 15, 2019
+
+ + set process exit code after a track is finished with an error
+ - crash on opening directory from disk (v1.5 bug)
+ - AAC decode: incorrect audio position of the first block (v0.30 bug)
+ - --dynanorm: crash on trying to use empty configuration (v1.1 bug)
+ - TUI: 'mute' setting was reset on track change
+
+
+fmedia v1.5 - Feb 9, 2019
+
+ + HLS client
+ + .mp4: support --stream-copy
+ + WASAPI: --list-dev: Mark default device
+ + WASAPI: --list-dev: Print default format for shared mode
+ + ICY: support UTF-8 meta
+ - Recording with --until produced a file with less audio length than expected
+
+
+fmedia v1.4 - Jan 7, 2019
+
+ + net.http: config: "proxy" - Connect via HTTP proxy server
+ + GUI: Restore user-selected theme on startup
+ + GUI: Playback -> "Select Audio Device" - Select playback audio device
+ + GUI: Help -> "Edit GUI Themes..."
+ - GUI: Help -> "Edit User Settings": Set the correct path for portable mode
+   Set the path to application directory for this command if fmedia is
+    configured in portable mode.
+ + Load "fmedia-user.conf" in portable mode
+ *! Moved "gui.gui.portable_conf" -> "core.portable_conf"
+ - ICY: Couldn't play radio streams with "Content-Type: audio/aac"
+ - file.out: Invalid characters in filename when using auto-naming (v0.22 bug)
+   If the value of $-variable ends with a space, then it might result in
+    corrupted output filename.
+
+
+fmedia v1.3 - Dec 9, 2018
+
+ + GUI: Parallel conversion (fmedia.conf::workers).
+ + Parallel conversion from command line ('--parallel' switch)
+ - .m4a write: Couldn't convert from broken .mp3
+ - GUI: Conversion progress didn't update (v1.2 bug)
+ - .flac read: Unsynchronized output from .cue files (v1.0 bug)
+   Audio positioning could be incorrect for the tracks in .cue file.
+
+
+fmedia v1.2 - Nov 10, 2018
+
+ + GUI: support custom themes (theme.conf file)
+ + GUI: 'File'->'Theme: Dark' - a simple dark theme
+ * GUI: instant playlist switching
+ - GUI: button text could be empty if no icon is set (FF v18.10 bug)
+
+
+fmedia v1.1 - Oct 14, 2018
+
+ + GUI: use icons on playback control buttons
+ + GUI: load multiple playlists from previous session on startup
+ * GUI: faster playlists (show 1000 items 5x faster)
+ - GUI: 'Add URL' command didn't work for radio stream URLs (v0.23 bug)
+ + GUI: 'List' -> 'Random' - Choose the next track randomly
+ + --random - Choose the next track randomly
+ + TUI: show track number
+ + core: on-demand modules loading (all except UI)
+   Now the modules don't affect fmedia startup time.
+ + core: "prevent_sleep" config setting - Don't allow the system to put
+    itself to sleep after some time of inactivity
+
+
+fmedia v1.0.1 - Sep 17, 2018
+
+ - .m4a write: fix segfault (v1.0 bug)
+ - gui: tray icon disappeared (v1.0 bug)
+
+
+fmedia v1.0 - Sep 8, 2018
+
+ + macOS: CoreAudio playback & capture
+ + delay modules loading (alac ape avi mkv mp4 mpc soxr wav wavpack)
+ + --stop-dblevel=DB[;TIME][;MINTIME] - If MINTIME is specified,
+   stop only after MINTIME time has passed
+ - file: windows: reading from EOF position doesn't result in an error
+
+
+fmedia v0.37 - Aug 5, 2018
+
+ + --include='WILDCARD[;WILDCARD]' - Only include files matching a wildcard (case-insensitive)
+ + --exclude='WILDCARD[;WILDCARD]' - Exclude files & directories matching a wildcard (case-insensitive)
+ + --until=playback-end - Stop recording when the last playback track is finished
+ + net.http: connect_timeout config setting
+ + net.icy: support OGG stream
+ *! queue: start the next track in list after an error has occurred with the current track
+    + queue: next_if_error config setting
+ - mixer: --mix didn't work
+ - .m4a write: support conversion from .mp3 (inaccurate audio length)
+
+
+fmedia v0.36 - May 5, 2018
+
+ + "--start-dblevel=DB" - Skip initial audio until input signal level goes above DB
+ + "--stop-dblevel=DB[;TIME]" - Stop processing if input signal level goes below DB for TIME time
+ + "--meta": support "@file:FILENAME" - Read meta from file
+ + "--flist=FILE" - Read filenames from FILE
+ - "--flac-compression": named as "--flac-level" in help info (v0.16 bug)
+
+ + GUI: File->"Analyze & Show PCM Info" command
+ - GUI: queue: the next track is played in the same playlist (v0.35 bug)
+ - GUI: List->Filter: segfault on use (v0.34 bug)
+ - TUI: recording: "max dB" value could be incorrect
+
+ + .flac: write picture block (via --meta="picture=@file:FILENAME")
+ + .cue: support REM in TRACK context
+ - PulseAudio: fix hanging
+
+
+fmedia v0.35 - Apr 2, 2018
+
+ + --prebuffer: Start recording by a command from user ('T' key), saving the previously bufferred seconds of audio
+ + gui convert: aac_bandwidth conf option
+ * gui convert: create/use just 1 playlist
+ * flac: support variable-length frame stream
+ - --seek, --until: time greater than 24h couldn't be used
+ - core: segfault on using channel + sample rate conversion on an ICY stream (v0.34 bug)
+
+
+fmedia v0.34.1 - Mar 14, 2018
+
+ - --dynanorm: couldn't be used with --record for short length recordings
+ - --dynanorm: couldn't be used with --format/--channels/--sample-rate
+
+
+fmedia v0.34 - Mar 9, 2018
+
+ + Dynamic Audio Normalizer filter (--dynanorm switch)
+ * gui: don't stop playback when starting conversion
+ - windows: --aac-profile didn't work
+ - .flac write: segfault on recording to FLAC (v0.32 bug)
+
+
+fmedia v0.33 - Feb 13, 2018
+
+ + core: add --globcmd.pipe-name command line argument
+   (can easily start and control many instances in parallel)
+ + wasapi: recording audio in loopback mode is now continuous
+   (record silence if nothing else is playing)
+ + gui: new command: Help -> "Check for Updates"
+ - icy: --out-copy: segfault on exit
+
+
+fmedia v0.32 - Jan 15, 2018
+
+ - winXP: fix startup (unsupported imported function in core.dll and unsupported GUI behaviour)
+ * --print-time: show more detailed info
+
+
+fmedia v0.31 - Dec 10, 2017
+
+ + ICY: save tracks from AAC radio stream into .m4a (with --stream-copy)
+
+ + .aac reader: support --stream-copy to .mp4
+ - .mpc decode: an "AP" block could be skipped
+ - ICY: reset HTTP response headers on reconnect
+ * net: don't reconnect if server closed connection gracefully
+ - WASAPI: exclusive mode: hanging after starting the next track (v0.29 bug)
+ - TUI: apply volume on track change
+ * TUI: linux: remove separate thread for reading from stdin
+ * core.so is loaded dynamically from mod/
+   all modules were moved to mod/
+
+
+fmedia v0.30.2 - Nov 8, 2017
+
+ - core: Linux,FreeBSD: couldn't run fmedia executable from $PATH (v0.30 bug)
+ - ICY: corrupt data (MP3) or error (AAC) in some cases (v0.30 bug)
+
+
+fmedia v0.30.1 - Nov 7, 2017
+
+ - core: Linux,FreeBSD: couldn't run fmedia executable from symlink (v0.30 bug)
+ - core: Linux: timer restart failed with an error "File exists" (v0.30 bug)
+
+
+fmedia v0.30 - Nov 5, 2017
+
+ + .aac (ADTS) file input (no seeking)
+ + ICY: support shoutcast AAC streams
+
+ * AAC decode: detect real audio format (support implicit SBR, SBR+PS)
+ + AAC encode: choose profile between AAC-LC, HE-AAC or HE-AACv2 (--aac-profile option)
+ * AAC,ALAC,APE: linux: libfdk-aac-ff.so, libALAC-ff.so, libMAC-ff.so don't depend on the system libstdc++
+ - .flac write: segfault on large meta (FF v16.08 bug)
+ - MPEG decode: data from .mkv was skipped (v0.29 bug)
+ - WASAPI: segfault or hanging when playing a network stream (v0.29 bug)
+ - ICY: don't start playing a network stream if its content type isn't supported
+ - ICY: reconnect to the original server after redirected request fails
+ - core: freebsd: file reading didn't work on some file systems
+ - core: segfault on several quick commands from TUI (v0.18 bug)
+
+
+fmedia v0.29.2 - Sep 13, 2017
+
+ - wasapi.out: segfault after WASAPI sys error (v0.29 bug)
+ - net.icy: --out-copy: file-writing track didn't stop after reconnect
+ - net.icy: invalid data in buffers after reconnect
+ - .cue read: the last track was added as the first one (v0.28 bug)
+
+
+fmedia v0.29.1 - Aug 19, 2017
+
+ - MPEG decode: invalid output frame after seeking (v0.29 bug)
+
+
+fmedia v0.29 - Jul 31, 2017
+
+ + support FreeBSD
+ + OSS playback
+
+ * FLAC: split flac.encode module into flac.encode and flac.out
+ - .m3u parse: handle empty lines
+ - .pls parse: skip entries with empty URL
+ - MPEG decode: correct positioning
+ - .mp3: invalid bitrate value could be shown for some CBR streams
+
+ * WASAPI: using timer for shared mode playback/capture,
+   don't use event notifications (80% less kernel/userspace context switches)
+ * WASAPI: more audio formats can be used in exclusive mode
+ - WASAPI: exclusive mode capture: fix duplicate buffers output
+
+ + TUI: add Mute command ('m')
+ + net.icy: timeout network I/O operations
+
+
+fmedia v0.28 - Jun 24, 2017
+
+ + --out-copy=cmd: save currently playing track from Internet radio by command ('T')
+
+ * ALSA: don't use "plughw" unless necessary (try "hw" first)
+ - ALSA: show available devices for each soundcard
+ - ALSA: use the first available device by default (not hw:0,0)
+
+ - MPEG: .mp4 seek didn't work
+ - MPEG decode: accurate position reporting (delay)
+ * .mp4: report seek error
+ - .m3u,.pls: handle last lines without LF
+ + net.icy: reconnect on I/O error
+ - net.icy: fix sending request after HTTP redirect
+
+
+fmedia v0.27 - May 21, 2017
+
+ * .mp3: show correct bitrate for CBR streams
+ * .mp3: --meta works with --stream-copy
+ - .mp3: accurate total length for streams without Xing frame
+ - MPEG decode: accurate seeking and audio position (v0.23 bug)
+ - .m4a stream output didn't work reliably
+ - .opus output: "-o .opus" didn't work
+ * .ogg input: support Opus
+ - Vorbis,Opus: print the correct stream length in TUI when using --stream-copy
+ - Vorbis,Opus output: write correct AUDIO_TOTAL when --seek is used
+
+ - GUI: "Invert Selection" didn't work (v0.23 bug)
+
+ + run in background (--background switch).  Supports --globcmd.
+ * add --globcmd=quit
+ - --seek & --until didn't work (v0.26 bug)
+ * modules check for supported input data formats
+ * file.in: better caching of file buffers
+   Buffers at offset 0 and 64k aren't wasted after seeking to file end.
+ * net.icy: support --meta
+
+
+fmedia v0.26 - Apr 20, 2017
+
+ * ALSA,Pulse,WASAPI: deferred initialization
+ - OGG Vorbis: fix playback of cut files
+ - .wav read: skip unneeded data at the end of "data" chunk
+ - ID3v2 parse: COMM: correctly handle short description
+ - net.icy: --out-copy: create output file for empty meta data
+
+
+fmedia v0.25 - Mar 27, 2017
+
+ + Linux: Pulse Audio playback
+   Must be enabled manually in fmedia.conf, because ALSA is used by default.
+ + Musepack seeking
+
+ *! core: Windows: fmedia can run from %APPDATA%/fmedia directory
+    Rename optional configuration files:
+     fmedia-user.conf -> fmedia-ext.conf
+     %APPDATA%/fmedia/fmedia.conf -> %APPDATA%/fmedia/fmedia-user.conf
+
+ + GUI: add Record -> "Select Audio Device" command
+ * GUI convert: add more codec settings
+ - plist.dir: fix segfault on auto-expanding sub-directories
+ - plist: fix segfault on parsing large .m3u/.pls files
+ - net.icy: "--out-copy" didn't work if server doesn't send ICY meta data
+ - net.icy: "--stream-copy" & "--out-copy" didn't work (v0.22 bug)
+
+
+fmedia v0.24 - Feb 25, 2017
+
+ + Musepack input (no seeking)
+
+ - MPEG: ID3v2 write: invalid COMM frame was generated
+ - core: --out=.EXT didn't work (v0.22 bug)
+ * complete build for i686
+
+
+fmedia v0.23 - Jan 24, 2017
+
+ + GUI: save/load current playlist on exit/start ("autosave_playlists" config setting)
+ + MPEG stream copy: copy ID3 tags
+ * MPEG: use separate filters mpeg.in and mpeg.decode
+ * MPEG: ID3v2.3 parse: support extended header
+ * MPEG: ID3v2.4 parse: support 'data length indicator'
+ + plist.dir: expand sub-directories
+ * core: move soxr convertor to a separate module
+   fmedia can run without any 3rd-party libraries.  Remove all unneeded modules from fmedia.conf if you need a tiny package with core functions only.
+ * fmedia can be built for i686 CPU without 3rd-party libraries
+
+
+fmedia v0.22 - Dec 25, 2016
+
+ + WASAPI: support loopback mode (record from playback)
+ + fmedia: add "--dev-loopback" argument
+ + core: support reading from stdin (@stdin.EXT) (WAV) (synchronous)
+ + core: support writing to stdout (--out=@stdout.EXT) (WAV, FLAC, OGG)
+ *! fmedia: --outdir argument was removed.  Use --out instead.
+
+ + GUI: new command "Filter" to search/filter tracks in playlist
+ + GUI: global hotkeys can be assigned to fmedia commands ("global_hotkeys" setting in fmedia.conf)
+ + GUI: show icon in tray while recording ("status_tray" config setting)
+ * GUI: record: support "Stop after" setting
+ * GUI: record: add "Capture Device Number" setting
+ * GUI: Open/Add modal dialog doesn't block main thread
+ - GUI: recording: correctly update GUI if recording was finished with an error
+
+ * WAV: support "data" chunk with unknown size
+ - WavPack: APE tags weren't recognized
+ - MPEG read: unknown ID3v2 tags were skipped
+ - MPEG read: segfault on unknown APE tag
+ - WASAPI playback: the first block of mono audio data was skipped
+
+ + conf: support "include" keyword to include additional configuration files
+   User settings may be stored in fmedia-user.conf
+ - conf: when using a setting from user conf file, the module's other settings were reset to default (v0.17 bug)
+ - net.icy: 2nd opened track didn't work
+ - net.icy: "--out-copy": didn't recover from errors properly
+ - queue: meta data from file has higher priority than artist/title from .m3u
+ - queue: "Next" after "Clear" didn't work
+
+
+fmedia v0.21 - Dec 11, 2016
+
+ + GUI: add "To Next Playlist" command into popup menu
+ - GUI: "instance_mode clear_play" didn't work: playlist wasn't updated properly
+
+ - FLAC encode: the last block of data wasn't written (FF v16.08 bug)
+
+ * file output: support $year variable (album year)
+ * file output: $-vars: replace more bad characters;  trim trailing whitespace
+ - queue: fix segfault on "Previous" command if track being played is inside inactive playlist
+ - fmedia: --track argument didn't work if multiple tracks are specified out of order
+
+
+fmedia v0.20 - Dec 3, 2016
+
+ + MKA/MKV input (no seeking)
+ + AVI input (no seeking)
+ * MP4 read: support MPEG input
+ - MP4 read: fix AAC, ALAC seeking (v0.18 bug)
+ - MP4 write: the first entry in stsz or stco might be corrupted when writing in streaming mode
+ * ALAC decode: truncate last audio frame to match container's total audio length
+ - encoders: accurate total samples estimation when sample rate conversion is used
+ - OGG read: handle pages with granule position = -1
+ - MPEG read: fix inaccurate seeking
+
+ * GUI: add AAC quality setting for recording
+ - GUI: segfault on trying to open empty/corrupted file
+
+ - plist: CUE/M3U/PLS: filenames with spaces didn't work (v0.19 bug)
+
+ + fmedia: add --globcmd argument for controlling fmedia running in another process
+ * file output: new variable $timems can be used while naming files
+ - core: fix filters chain mem leak
+ - core: segfault on stopping active track whose queue was cleared
+ - core: bad output for mono->stereo channel conversion (FF v16.08 bug)
+ - core: fix segfault on processing unknown $-variable when --record is used (v0.16 bug)
+ - core: arbitrary block of data could be skipped after a command is sent to core (v0.18 bug)
+
+
+fmedia v0.19 - Nov 7, 2016
+
+ + GUI: conf: add "minimize_to_tray", "portable_conf", "seek_step", "seek_leap" settings
+ + GUI: add "Leap Forward", "Leap Back" commands
+ - GUI: seek to the beginning when requested to seek to <0 target sample
+ - GUI: play next track on inactive tab doesn't set main window caption
+ - GUI convert: channels and rate settings didn't work (v0.18 bug)
+ - GUI: "Quick Start" recording didn't work until window with recording settings is initialized (v0.16 bug)
+ - TUI: don't show playback bar of another track while recording
+
+ * MP4 write: support recording to MP4/AAC
+ - MP4 write: write "mdat" size in non-streaming mode
+ - Vorbis: support stream copy (v0.18 bug)
+ + Opus: support stream copy
+ - Opus decode: fix segfault on Opus packet decoding error
+ - Opus decode: too much memory was allocated for decoding buffer
+ - OGG read: handle the last page with granule position = -1
+
+ + plist: support .pls playlist input
+ - plist: M3U read: support URLs in playlist
+
+ - DirectSound: TUI wasn't updating on recording
+ * DirectSound: --until can be used together with --record
+
+ + fmedia: add --conf command line argument
+ * core.rtpeak: support int24 and int32 for peak metering while recording
+ - core: Ctrl+C or Q command didn't stop recording properly (v0.17 bug)
+ - queue: recording while playing couldn't save output file properly in some cases
+
+
+fmedia v0.18 - Oct 27, 2016
+
+ +  Opus decode/encode
+ *! OGG: "ogg-vorbis" module is split into "ogg" and "vorbis"
+    fmedia: rename "--ogg-quality" to "--vorbis.quality"
+    OGG stream copy is disabled in this version
+ -  OGG read: couldn't parse the last page in small OGG files
+
+ + GUI: add "Reset Volume" command
+ * TUI,GUI: print audio format (e.g. "int16" instead of "16 bit")
+ - TUI: print error when audio format isn't set
+
+ - fmedia: TUI commands didn't work while converting files in synchronous mode
+ - fmedia: conversion with --rate didn't work
+ * fmedia: support Windows XP
+ - core: fix potential segfault on exit
+ - core: queue: segfault on song end if its playlist was closed
+ - core: conf: fix segfault after trying to add module that doesn't exist (v0.17 bug)
+ - core: command line arguments didn't work with wildcard input files on Windows (v0.17 bug)
+ - core: encoding arguments didn't work with --record (v0.17 bug)
+
+
+fmedia v0.17 - Oct 3, 2016
+
+ * GUI: move playlist menu items from File to List
+ * GUI convert: add "stream_copy" setting
+ - GUI: support DPI settings for listview columns width
+ - GUI: volume setting wasn't active on the first audio data (v0.16 bug)
+
+ * MP4 write: write bitrate value into esds box
+ + MP4 write: write trackno/tracktotal
+ + MP4/AAC write: preallocate output space
+ + MPEG write: preallocate output space
+ - MPEG stream copy: fix double Xing tags
+ - MPEG read: fix invalid current sample number by accounting for encoder/decoder delays
+ - PCM int24, FLAC write: fix invalid negative 24-bit integer handling
+ - WAV read: fix bad PCM format parse from wave file with extended header (FF v16.08 bug)
+ + ALSA out: add config setting "notify_rate"
+
+ - queue: fix segfault on stopping track whose playlist has been closed before
+ + file read: "direct_io" config setting
+ * file write: preallocation size can grow as output file grows
+ * file write: delete file if an error has occurred in track chain
+ - core: module data could be initialized twice, resulting in mem leak and slower startup time
+
+
+fmedia v0.16 - Aug 24, 2016
+
+ + TUI: "pause" command
+ + GUI: new window with recording settings
+ + GUI: store recording settings in config
+ * GUI: preserve artist/title info on tab switching
+ * GUI: convert: add tracks into a new tab
+ * GUI: config: add convert.output setting
+ - GUI: fix potential segfault while initializing controls with invalid names
+
+ + WAV input: support meta tags
+ + MP4 output: support meta tags
+ * MP4 AAC output: support more input audio formats (not just int16) and non-interleaved input
+ * MP4 AAC: support AAC encoder delay and padding
+ - MP4 AAC: default setting for --aac-quality switch didn't work
+ + MPEG: support stream copy without re-encoding
+ * MPEG decode: support VBRI tag
+ * FLAC output: support other input audio formats with dynamic conversion
+ * OGG decode: sample-accurate seek
+ - OGG decode: fix invalid audio position of the target page after seeking
+ - OGG encode: flush OGG page with 255 segments
+
+ +  net.icy: write audio data to a file while playing
+ -  mixer: setting output format in config didn't work
+ +  fmedia: command line switches --format, --rate and --channels are used for both audio input and output
+ *! fmedia: rename --silent to --notui
+ +  fmedia: add --stream-copy, --out-copy command line switch
+ *! fmedia, WAV: --mono, --wav-format are removed.  Use --channels and --format instead.
+ *! core: conf: "input module" directive doesn't accept audio format settings
+    Add "record_format" directive for this purpose
+ *! core: conf: audio format string has changed: e.g. 16le -> int16
+ *  soundmod.conv: support immediate format conversion
+ *  soundmod.conv: left/right mono conversion doesn't require additional processing
+ -  soundmod.conv: conversion mono->stereo produced too quiet output
+ *  WASAPI input: support format/channels conversion
+ +  file: support "$date" and "$time" variables
+
+
+fmedia v0.15 - Jul 28, 2016
+
+ + MP4 AAC output
+
+ * GUI: fmedia-gui.exe shows message dialog on startup error
+ + GUI: read conversion settings from config
+ + GUI: add "Go To" command
+ + GUI: convert: new commands "Set Seek Position", "Set Until Position"
+
+ * OGG decode: support partial packets
+ * MPEG decode: skip parse errors and continue from the next frame
+ * MP4: more descriptive error messages
+ - MP4: esds: support larger AAC config data
+ - MP4: stsc: fix segfault on invalid data
+ - MP4: parser stopped on reaching empty box which is supposed to have children
+
+ - core: fix segfault when converting audio using --mono
+ * file: create path for output file
+
+
+fmedia v0.14 - Jul 9, 2016
+
+ - GUI: fix more potential threads races
+ + TUI: new command "Show Tags"
+ - MPEG decode: fix hanging on ID3v1 tag parsing after ID3v2 was not found (FF v16.05 bug)
+ - MPEG decode: last samples in file were not decoded (FF v16.05 bug)
+ - MPEG encode: ID3v2: fix adding "track number" and "total tracks" if padding is enabled (FF v16.04 bug)
+ - ID3v2: better handling of short description for a comment with UTF16 BOM
+ - FLAC, WavPack: seek to the beginning didn't work
+ - APE tag: fix input data offset if tag is small (FF v16.05 bug)
+ - OGG: no-decode mode: 2nd page wasn't returned (FF v16.03.31 bug)
+
+
+fmedia v0.13 - May 26, 2016
+
+ + ICY: support shoutcast input (MPEG)
+
+ + GUI: new window "Add URL"
+ * GUI: "Copy Filename to Cipboard": support UTF-8
+ - GUI: dialog title string wasn't NULL-terminated
+ - GUI: fix segfault on using "Convert" command (v0.12 bug)
+ - GUI: convert: meta data from .cue file wasn't copied (v0.12 bug)
+ * GUI: convert: add "gain", "mono", "meta" settings
+
+ * WASAPI, ALSA capture: --until can be used together with --record
+
+ * FLAC: skip junk data (e.g. ID3v2) before FLAC header
+ * APE, WavPack: more effective APE tag parsing
+ + MPEG decode: support APE tag
+ - MPEG decode: fix segfault when there are no first 2 complete consecutive MPEG frames in the first chunk of input data
+ - MPEG decode: compare the first 2 MPEG frame headers and skip the first frame if they don't match
+
+ * fmedia: "--meta=clear" skips transient meta tags
+ * fmedia: windows: support --key="value with space"
+
+
+fmedia v0.12 - Apr 26, 2016
+
+ + MP4: support AAC decoding
+
+ + GUI: support multiple playlists
+ + GUI: menu commands for editing config files
+ * GUI: much faster remove from queue
+ * GUI: save position of all windows on close
+ * GUI: preserve track position within queue when expanding directory/m3u/cue
+ * TUI: Windows: support seeking and volume change using arrows
+ * TUI: Linux: new config setting "echo_off"
+ - TUI: don't react on volume change or seeking while converting
+ - TUI, GUI: accurate bitrate value
+
+ * MPEG encode: ID3: support tag padding ("min_meta_size" config setting)
+ * MPEG decode: ID3: support null-terminated tag value
+ - FLAC decode: support int24 audio format
+ - FLAC encode: fix segfault on writing large meta
+ * MP4: support multi-track .mp4 files
+ * MP4: don't fail if box with the same name occurs more than once
+ * soxr: support non-interleaved output
+ * WASAPI capture: auto-detect supported audio format
+ * ALSA,WASAPI playback: support more audio formats, not just int16
+
+ * fmedia: windows: support wildcards when opening input files (without bash auto-expansion)
+ + fmedia: windows: new commands to fmedia.exe: --install and --uninstall
+ * fmedia: new arguments --flac-compression, --rate
+ - rtpeak: real-time peaks didn't work while recording with ALSA
+ - queue: couldn't overwrite meta tags with --meta argument
+
+
+fmedia v0.11 - Mar 30, 2016
+
+ * MPEG decode: use libmpg123 instead of libmad
+ * OGG, FLAC encode: support larger Vorbis comments
+
+ - OGG: seek didn't work on files with pages copied from another file
+ - OGG decode: "current sample" value for the first page was invalid
+ - GUI: tags info: support large text
+ - fmedia: --gui switch didn't work without input files
+ - core: --wav-format=float didn't work (v0.7 bug)
+ - file: fix segfault when using unknown $-variable with --out switch
+ - file: using $filename with --out switch didn't work for filenames without slash
+
+
+fmedia v0.10 - Mar 15, 2016
+
+ + OGG: support copying OGG stream without re-encoding
+ - OGG: seeking is more accurate (the target OGG page is located)
+
+ - FLAC,OGG,MPEG: the formats couldn't be used with --record
+ - MP4: get average file bitrate from MP4 if bitrate value in ALAC header isn't set
+ - MP4: ALAC: accurate seek to an audio sample
+ - ALAC: windows: libALAC-ff.dll doesn't require libstdc++-6.dll anymore (fmedia couldn't startup with mp4.decode module enabled)
+
+ * GUI: save text of output conversion file in fmedia.gui.conf
+ * GUI: remove "convert_*" config settings
+ - GUI: fix main window flicker on startup (v0.4 bug)
+
+ - fmedia: windows: Ctrl+C didn't work (v0.9 bug)
+
+
+fmedia v0.9 - Feb 29, 2016
+
+ + MP4 (ALAC) input
+ + ALSA capture
+ + MPEG encode: write ID3v1 and ID3v2 tags
+
+ + TUI: show real-time PCM peak value in dB while recording
+ * TUI: "Stop", "Quit" commands can stop recording
+ + GUI: save playlist to M3U file
+ + GUI: add commands "Jump To Marker" and "Set Marker"
+ - GUI: main window position wasn't preserved on File->Exit command
+ - GUI: show the first fmedia instance after executing the second instance without input files
+ - GUI: "Play Mixed and Record" command didn't work
+ - GUI: record: stop all playing tracks before starting playback of new tracks
+ - GUI: issuing the second seek command to the same position didn't work (v0.8 bug)
+
+ - APE, WavPack: don't pass binary meta (e.g. cover picture)
+ - OGG: support padding in Vorbis comments
+ * Vorbis comments: support "TotalTracks"
+ - OGG: fix invalid audio position if page granulepos is not set
+ - MPEG decode: fix inaccurate bitrate value if there's a large ID3v2 tag present
+
+ * --pcm-peaks: print peak values as dB
+ - fmedia: linux: fix potential threads race when SIGIO event from ALSA device fd is received in TUI command processing thread
+ - fmedia: windows: Unicode input arguments were not supported
+ - ALSA, WASAPI: reset audio device after system error
+ - WASAPI, core: playback of mono audio didn't work in shared WASAPI mode
+ - queue: don't start playing the first track in queue after playback of the last track has failed with "unsupported format" error (v0.7 bug)
+
+
+fmedia v0.8 - Jan 27, 2016
+
+ + APE decode
+
+ + fmedia-gui: support single instance mode
+ + GUI: add playback control buttons
+ + GUI: "Stop After Current" command
+ * GUI: show playback/total time info at the top
+ * GUI: add settings for audio conversion
+ - GUI: don't react to seek or volume changes while converting audio
+ - GUI: prevent hanging when too many seek requests are made
+ - GUI: 2 seek requests were made if Right key is pressed while seek trackbar is focused
+ - GUI: "convert" window: "..." button didn't work (v0.7 bug)
+
+ * TUI, GUI: reduce delay after seek request
+ - TUI, GUI: progress bar wasn't shown right after a track is started
+
+ + OGG encode: new config option "page_size", "min_tag_size"
+ * OGG: "quality" config setting type is now "float"
+ * OGG encode: allocate disk space for the whole output file
+ - OGG encode: audio samples could be lost if input data is very small
+ - OGG: prevent hanging in case no eos page is found or unexpected data exists after eos page
+
+ + CUE: support non-Unicode text
+ - CUE: use track PERFORMER value even if global PERFORMER value exists (v0.7 bug)
+
+ + file.out: support $filepath and $filename variables for naming output file
+ + core config settings can be stored in user config file
+ + fmedia: new argument --mono: convert stereo to mono
+ * fmedia: new config option "codepage"
+ * MPEG.decode: "meta_codepage" option is removed, use global "codepage" config option
+ - TUI: fix FP exception when total_samples is 0
+ - queue: the next track is started after the current track has been removed
+ - ALSA: fix segfault on starting the next track
+ - core: fix segfault when invalid keyname is used in user config file
+ - file.in: near forward seek didn't work if target position is larger than buffer size (v0.4 bug)
+
+
+fmedia v0.7 - Dec 24, 2015
+
+ + TUI: support real-time user commands: "Play/Stop/Next/Previous", "Seek", "Volume", "Remove from playlist", "Delete file from disk"
+ * TUI: always print currently playing position (e.g. while recording)
+ + GUI: show error messages in a separate window
+ * GUI: user settings file is now located in user directory, not application directory
+ - GUI: fix potential threads race when sending commands to a track
+
+ * FLAC, OGG, WavPack: faster "--info"
+
+ + FLAC encode: support generating seek table, MD5 checksum
+ * FLAC encode: preallocate disk space for the whole output file
+ * FLAC decode: improved speed of seeking
+
+ * WavPack: improved speed of seeking
+ - WavPack: decoding might not work if APE tag is present
+ - WavPack: program could hang if a large APE tag is present
+
+ + CUE: value for --track argument may contain a list of track numbers, not just one number
+ + CUE: support one more option for --cue-gaps argument
+ * CUE: skip tracks with invalid duration (i.e. if from >= to)
+ * CUE: don't skip unknown meta tags
+ - CUE: fix potential errors with global CUE meta (those before "FILE" keyword)
+ - CUE: fix meta array memory leak
+
+ + fmedia: new command-line arguments "--meta", "--tags", "--preserve-date"
+ - fmedia: "--until" command didn't work for a track in .cue file
+ * queue: don't remove track from queue on transient or system error unless the error is "unsupported format"
+ * queue: don't play next file if error occurred, unless --silent mode is active
+ * file: support user-specified meta tags while auto-naming output file (--out)
+ * fmedia: --outdir is "." by default
+ - core: Windows: user configuration settings didn't work
+
+
+fmedia v0.6 - Oct 31, 2015
+
+ + support Linux
+ + ALSA playback
+
+ + core: support per-user configuration settings
+ * queue: quit when Ctrl+C is pressed
+ * mpeg, ogg, flac: support "meta_tracktotal"
+ + mpeg.decode: support configuration setting "meta_codepage" via fmedia.conf
+
+ * flac.encode: support PCM float input
+ - fmedia: don't hang if no input files were specified
+ - core: --list-dev command didn't work (v0.3 bug)
+ - flac, wavpack: meta info from .CUE file has a higher priority than meta from media file itself
+ - plist.m3u: absolute filenames inside M3U file were not supported
+ - conv-soxr: "pause" command from gui didn't work correctly
+ - wasapi: eliminate potential race during playback
+ - wasapi.in, dsound.in: fix segfault on starting sound capture (v0.5 bug)
+ - mixer: fix segfault when using mixer (v0.5 bug)
+
+
+fmedia v0.5 - Sep 29, 2015
+
+ + WavPack decode
+ + MPEG encode
+ + soundmod.soxr: convert PCM sample rate
+
+ * fmedia: --seek and --until accept variable length time string of format "h:m:s.ms"
+ * fmedia, core, wav.out: --pcm-format -> --wav-format
+
+ + gui: new menu commands: "Select All", "Invert Selection", "Copy to Clipboard", "Copy Filename to Clipboard", "Delete From Disk", "Play and Record", "Mix and Record"
+ + gui: simple sorting by "filename", "artist", "title" columns
+ + gui: convert multiple files
+ - core, gui: fmedia didn't exit after error in GUI loader
+ - gui: STOP didn't work after PAUSE
+ - gui, wasapi.out, dsound.out: quicker reaction to "pause", "seek" command
+ - gui: meta from flac.cue wasn't passed to output file when "Convert" command is used
+ - gui: "Open Folder" didn't work for filenames with spaces
+
+ + mixer: buffer size can be configured in fmedia.conf
+ + mixer: support mixing PCM 16le with PCM float
+ - mixer: output could hang in some cases
+
+ - file.out: flush memory buffers to a file before seeking
+ - file: seek=0 didn't work
+
+ * wasapi: request sample rate conversion if soundcard doesn't support input sample rate
+ * wasapi: output: don't reopen output buffer on each file, unless audio format or device has changed
+
+ - queue: the next item in queue wasn't played after directory or playlist was opened (v0.4 bug)
+ - plist.cue: invalid track_duration was set (v0.4 bug)
+ - soundmod.until: tracks from .cue files could hang when stopped from GUI (v0.4 bug)
+
+
+fmedia v0.4 - Aug 21, 2015
+
+ + gui: fmedia-gui binary supports command-line arguments
+ + gui: synchronize queue with the playlist view
+ + gui: accept files dragged and dropped from explorer
+ + gui: support recording audio
+ + gui: save into a file wmain.position and tvol.value on exit
+ + gui: convert 1 selected media file
+ * gui: use filename as a title if there's no title in media meta info
+ * gui: use config options
+ * gui: "show directory" command selects the file in explorer
+ * tui: print total samples
+
+ + plist.cue: control track pregaps (--cue-gaps=VAL)
+ * plist.cue: don't skip pregaps by default, but add them into the previous track
+ - plist.cue: precise (to a sample) seek positioning and track duration
+
+ - mixer: fix unsynchronized output (v0.3 bug)
+ - mixer: the first output chunk might contain invalid PCM data
+ - mixer: output to OGG Vorbis didn't work
+
+ - core: fix track's dictionary entries memory leak
+ - core: command line options "--out=.EXT --outdir=DIR" didn't work (v0.2 bug)
+ + plist.dir: open directory (find files in a directory and add them to the queue)
+ * queue: delete the item from queue if there was an error while processing track
+ + soundmod.peaks (--pcm-peaks, --pcm-crc)
+ - soundmod.until: the first chunk of PCM data was skipped (v0.3 bug, affects all audio  processing)
+ + mpeg.decode: support ID3v1 tag (note: track number and genre aren't supported)
+
+
+fmedia v0.3 - Jul 25, 2015
+
+ + added GUI
+ + support M3U playlist
+ + FLAC: support per-track playback of CUE files
+ + file: ability to automatically name output file from meta info
+ + OGG: support playing files with no eos page
+ + FLAC: support FLAC-to-FLAC convertion
+ - conf: multiple media file extensions didn't work
+ - core: fixed module name memory leak
+ - conf: media file extension matching is now case insensitive
+ - FLAC: couldn't play flac files if header size matches input file buffer size
+
+
+fmedia v0.2 - June 20 2015
+
+ + FLAC input/output
+ + OGG output
+ + MPEG decode
+ + WASAPI input with latency auto-correction
+ + "live" capture mode
+ * --record switch is now boolean, may be used with --out=FILE
+ + --outdir - Set output directory
+ + --pcm-format - Set output PCM format
+ + --gain - Set output gain in dB
+ + --overwrite - Overwrite output file
+ + conf: output_ext
+ + conf: "mod_conf": modules can be configured via fmedia.conf
+ * OGG: more precise "current_position"
+ - WASAPI: don't hang if input data is too small
+ - file.in: correctly handle read() from eof position
+ - mpeg: support ID3v2 tags with "unsync" flag
+
+
+fmedia v0.1 - May 23 2015
+
+ + OGG input
+ + WAV input/output, raw input
+ + MPEG input (meta only)
+ + file input/output
+ + Direct Sound input/output
+ + WASAPI output
+ + mixer
+ + TUI

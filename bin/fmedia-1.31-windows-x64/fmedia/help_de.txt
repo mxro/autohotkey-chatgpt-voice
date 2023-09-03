@@ -1,0 +1,205 @@
+Anwendung:
+    fmedia [OPTIONEN] [EINGABE...]
+
+EINGABE            Datei, Verzeichnis, URL oder ein Platzhalter (WILDCARD)
+                   @stdin.EXT: Lese von der Standard Eingabe
+
+OPTIONEN:
+
+Typische Aufnahmekette: WARTESCHLANGE -> EINGABE -> FILTER -> KODIERUNG -> AUSGABE
+
+AUDIO GERÄTE:
+
+--list-dev          Liste alle verfügbaren Audio Geräte auf und beende
+--dev=DEVNO         Benutze Gerät zum abspielen
+--dev-capture=DEVNO Benutze Gerät zum aufnehmen
+--dev-loopback=DEVNO
+                    Benutze Gerät zum abspielen im loopback Modus (Aufnahme erfolgt über playback) (nur WASAPI)
+--playback-buffer=INT
+                    Length (in msec) of the playback buffer (See also fmedia.conf::*.out.buffer_length)
+
+AUDIO FORMAT:
+
+--format=STR       Setzt das Audio Format (int8 | int16 | int24 | int32 | float32)
+--rate=INT         Setzt die Abtastrate (sample rate)
+                   Hinweis: Manche Einstellungen könnten zusammen mit der Anpassung der Abtastrate nicht funktionieren
+--channels=STR     Setzt Kanal Nummer
+                   Konvertierung zu Stereo oder Mono möglich:
+                    --channels=mono: Mische alle Kanäle zusammen
+                    --channels=left: Benutze nur den linken Kanal
+                    --channels=right: Benutze nur den rechten Kanal
+
+WARTESCHLANGE:
+
+--track=N1[,N2...] Wähle ein spezifisches Stück aus der Wiedergabeliste
+--repeat-all       Wiederhole alles
+--random           Wähle das nächste Stück zufällig
+
+EINGABE:
+
+--record           Audio aufnehmen. Das Standard Audio Format ist in fmedia.conf::record_format hinterlegt.
+--capture-buffer=INT
+                   Length (in msec) of the capture buffer (See also fmedia.conf::*.in.buffer_length)
+
+--flist=FILE       Lese alle Dateinamen von FILE
+--include='WILDCARD[;WILDCARD]'
+                   Binde nur die Dateien ein, die dem Platzhalter (WILDCARD) entsprechen. Es wird nicht zwischen Groß- und Kleinschreibung unterschieden (case-insensitive)
+--exclude='WILDCARD[;WILDCARD]'
+                   Schließe die Dateien und Ordner aus, die dem Platzhalter (WILDCARD) entsprechen. Es wird nicht zwischen Groß- und Kleinschreibung unterschieden (case-insensitive)
+-i, --info         Zeige Informationen zum Medium
+--tags             Zeige alle Meta Schlagwörter (meta tags)
+--fseek=BYTE       Setzt ein Offset für die Eingabedatei
+-s, --seek=TIME    Suche den angegebenen Zeitpunkt: [[HH:]MM:]SS[.MSC]
+-u, --until=TIME   Stoppe zum angegebenen Zeitpunkt
+                   Besondere Werte:
+                     'playback-end': Beende die Aufnahme sobald das letzte Stück beendet wurde
+
+--cue-gaps=INT     Fügt Vorlücken (pregaps) zur Aufnahme hinzu
+                   0: überspringe Vorlücke:
+                     track01.index01 .. track02.index00
+                   1: (Standard), Lücke wird zum vorherigen Stück addiert:
+                     track01.index01 .. track02.index01
+                   2: Lücke wird zum vorherigen Stück addiert (aber die Vorlücke von track01 bleibt erhalten):
+                     track01.index00 .. track02.index01
+                     track02.index01 .. track03.index01
+                   3: Lücke wird zum Anfang des aktuellen Stücks hinzugefügt:
+                     track01.index00 .. track02.index00
+
+FILTER:
+
+--volume=INT       Setzt Lautstärke (0% .. 125%)
+--gain=FLOAT       Setzt Verstärkung (gain) bzw. Abschwächung in dB
+--dynanorm         Benutze den Filter Dynamic Audio Normalizer.
+                   Parameter hierfür können in Abschnitt `mod_conf dynanorm.filter` in der Datei fmedia.conf gesetzt werden.
+--auto-attenuate=FLOAT
+                   Set ceiling audio level in dB (always negative value) for loud tracks
+
+--start-dblevel=DB Überspringe das initiale Audio solange bis das Eingabesignal über das Level DB geht (-100dB..0dB)
+--stop-dblevel=DB[;TIME][;MINTIME]
+                   Stoppe den Prozess wenn das Eingangssignal unter das Level DB für TIME Zeiteinheiten geht (Standard: 5 sek).
+                   Wenn MINTIME spezifiziert ist, stoppe erst wenn MINTIME Zeiteinheiten vorbei sind.
+
+-P, --pcm-peaks    Analysiere PCM and gebe Details dazu aus
+--pcm-crc          Gibt CRC der PCM Daten aus (muss mit --pcm-peaks genutzt werden)
+                   Nützlich um die Ergebnisse einer verlustfreien Audio Konvertierung zu überprüfen
+
+--prebuffer=TIME   Start recording by a command from user, saving the previously bufferred seconds of audio
+--split=TIME       Split audio by equal time intervals
+
+--mix              Spiele alle eingegebenen Dateien gleichzeitig.
+                   Das Audio Format kann in fmedia.conf::mod_conf "mixer.out" angepasst werden.
+                   Hinweis: alle Eingaben müssen die gleiche Anzahl an Kanälen und Abtastrate wie die Ausgabe haben.
+
+KODIERUNG:
+
+--vorbis-quality=FLOAT
+                   Vorbis Kodierungsqualität: -1.0 .. 10.0
+--opus-bitrate=INT Opus Kodierungs Bitrate: 6..510 (VBR)
+--mpeg-quality=INT MPEG Kodierungsqualität: 9..0 (VBR) or 64..320 (CBR)
+--aac-quality=INT  AAC Kodierungsqualität: 1..5 (VBR) or 8..800 (CBR, kbit/s)
+--aac-profile=STR  Setzt AAC Profil: LC | HE | HEv2
+--flac-compression=INT
+                   FLAC Kompressionslevel: 0..8
+--stream-copy      Kopiert Audiodaten ohne diese erneut zu kodieren. Unterstützte Formate: .ogg, .mp3.
+
+AUSGABE:
+
+-o, --out=[NAME].EXT
+                   Keine Wiedergabe, sondern Ausgabe in eine Datei schreiben (d.h. konvertiere Audio)
+                   Wenn der NAME "@stdout" ist, schreibe auf die Standardausgabe.
+                   Ausgabeformat wird über "EXT" festgelegt (siehe fmedia.conf::output_ext).
+                   Unterstützte Variablen:
+                     $filepath: Pfad zur Eingabedatei
+                     $filename: Name der Eingabedatei (ohne Dateikürzel)
+                     $date: aktuelles Datum
+                     $time: aktuelle Zeit
+                     $timems: aktuelle Zeit in Millisekunden
+                     $counter: sequentially incrementing counter (starts from 1)
+                   --out=.ogg ist eine Abkürzung für --out='./$filename.ogg'
+                   Der Dateiname kann automatisch aus den Metainformationen generiert werden,
+                     z. B..: --out '$tracknumber. $artist - $title.flac'
+-y, --overwrite    Überschreibe Ausgabedatei
+--preserve-date    Setzt Datum/Zeit der Ausgabedatei auf die Werte der Eingabedatei.
+--out-copy         Spiele Daten ab UND kopiere sie in die Ausgabedatei welche mit "--out" festgelegt wurde
+--out-copy-cmd     Spiele Daten ab UND kopiere sie in die Ausgabedatei welche mit "--out" festgelegt wurde,
+                     speichere jedes Stück nur auf Befehl des Anwenders/der Anwenderin
+
+--meta='[clear;]NAME=STR;...'
+                   Setzt Metadaten
+                   Wenn "clear;" spezifiziert ist, überspringe all Metadaten der Eingabedatei.
+                   .mp3 unterstützt: album, albumartist, artist, comment, date, genre, picture, publisher, title, tracknumber, tracktotal.
+                   .mp4 unterstützt: album, albumartist, artist, comment, composer, copyright, date, discnumber, genre, lyrics, title, tracknumber.
+                   .flac, .ogg unterstützen jegliche Schlagwörter.
+                   Die Werte dazu können aus einer Datei gelesen werden (z. B. album cover picture):
+                     "--meta=picture=@file:FILENAME"
+--edit-tags        Don't play files but just modify their meta tags.
+                   Set tags with '--meta'.
+                   Supported formats: .mp3(ID3v2+ID3v1)
+--meta-from-filename=TEMPLATE
+                   Specify template for auto-tagging from input file name.
+                   Use together with --edit-tags.
+                   .mp3 supports: $album, $albumartist, $artist, $comment, $date, $genre, $publisher, $title, $tracknumber, $tracktotal.
+
+ANDERE OPTIONEN:
+
+--parallel         Verarbeite Eingabedateien parallel (fmedia.conf::workers).
+                   Muss mit '--out' genutzt werden.
+--background       Lauf im Hintergrund
+--globcmd=STR      Sendet Befehle an einen anderen laufenden fmedia Prozess.
+                   Unterstützte Befehle:
+                     listen: Fange an auf eingehende Befehle zu hören
+                     play INPUT... : Füge Einträge zur Warteschlange hinzu und spiele das erste hinzugefügte ab
+                     add INPUT... : Füge Einträge zur Warteschlange hinzu
+                     clear: Leere die aktuelle Wartschlange
+                     next: Play next track in the current queue
+                     stop: Stoppe alle aktiven Stücke
+                     pause: Pause all active tracks
+                     unpause: Unpause all paused tracks
+                     quit: Beende den fmedia Prozess
+--globcmd.pipe-name=STR
+                   Setzt den Namen der Pipe für die Kommunikation zwischen fmedia Instanzen
+
+--http-ctl="[Option,...]"
+                    Enable HTTP server (http://<IP>:7314/) for handling remote commands.
+                    Supported commands:
+                      "POST /api/next": Play next track
+                      "POST /api/pause": Pause
+                      "POST /api/unpause": Unpause
+
+--playlist-heal="[Option,...]"
+                    Auto-correct the paths to files inside a .m3u playlist.
+                    Replace absolute file paths to relative paths, e.g.:
+                      for /path/list.m3u:
+                      /path/dir/file.mp3 -> dir/file.mp3
+                    Correct the file extension, e.g.:
+                      dir/file.mp3 -> dir/file.m4a
+                    Correct the file directory, e.g.:
+                      olddir/file.mp3 -> newdir/file.mp3
+                    Correct the file directory & extension, e.g.:
+                      olddir/file.mp3 -> newdir/file.m4a
+                    Note: can't detect file renamings.
+
+--conf=FN          Setzt Konfigurationsdatei (Standard: "fmedia.conf" im Programmverzeichnis)
+--gui              Benutze grafischen Eingabe-Modus (nur Windows, Linux)
+--notui            Benutze NICHT das Terminal
+--print-time       Zeige die Verarbeitungszeit jeder einzelnen Aufnahme an
+--debug            Zeige Debug-Informationen in der Standardausgabe (stdout) an
+-h, --help         Zeige Hilfe and und beende
+
+INSTALLIEREN:
+
+--install          Windows: Fügt das Verzeichnis "fmedia" zur Benutzungsumgebung hinzu und erzeugt ein Shortcut auf dem Desktop
+--uninstall        Deinstalliere alle Änderungen, die durch '--install' erzeugt wurden
+
+SOME EXAMPLES:
+
+Play:
+    fmedia play.mp3
+Record:
+    fmedia --record -o rec.flac
+Convert:
+    fmedia input.wav -o output.ogg
+Edit tags:
+    fmedia --edit-tags --meta='artist=ARTIST;title=TITLE' file.mp3
+Heal playlists:
+	fmedia --playlist-heal="" ./*.m3u8
