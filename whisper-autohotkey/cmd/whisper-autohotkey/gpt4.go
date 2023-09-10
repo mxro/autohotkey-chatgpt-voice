@@ -39,11 +39,12 @@ Now I will provide the ACTION. Please remember, NEVER respond with ANYTHING ELSE
 		return "MsgBox, 32,, No input detected! Is your microphone working correctly?", nil
 	}
 
-	c := openai.NewClient(config.OpenapiKey)
-
-	if err := os.WriteFile("prompt.txt", []byte(prompt), 0666); err != nil {
+	systemContext, err := os.ReadFile("./prompt.txt")
+	if err != nil {
 		return "", err
 	}
+
+	c := openai.NewClient(config.OpenapiKey)
 
 	response, err := c.CreateChatCompletion(
 		context.Background(),

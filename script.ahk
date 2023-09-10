@@ -1,2 +1,2 @@
-MsgBox, 32,,It would be absolutely impossible.
+Run, https://www.openai.com/research/chet-gpt/
 return
