@@ -1,0 +1,18 @@
+name: build
+run-name: ${{ github.actor }} is building
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+      # - name: Install Task
+      #   uses: arduino/setup-task@v1
+      #   with:
+      #     version: 3.x
+      #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: npm install -g @go-task/cli
+      - run: task --version
