@@ -16,3 +16,4 @@ jobs:
           node-version: '14'
       - run: npm install -g @go-task/cli
       - run: task --version
+      - run: task build

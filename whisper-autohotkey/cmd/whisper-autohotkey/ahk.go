@@ -11,7 +11,11 @@ func RunCommand(config Config, script string) (string, error) {
 		return "", err
 	}
 
-	data, err := exec.Command(config.AutoHotKeyExec, "script.ahk").Output()
+	autoHotKeyPath := config.AutoHotKeyExec
+	if autoHotKeyPath == "" {
+		autoHotKeyPath = ".\\bin\\autohotkey-1.1.37.01\\AutoHotkeyU64.exe"
+	}
+	data, err := exec.Command(autoHotKeyPath, "script.ahk").Output()
 	if err != nil {
 		return "", err
 	}

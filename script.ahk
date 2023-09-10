@@ -1,1 +1,2 @@
-Run, https://duckduckgo.com/?q=Tailwind+CSS+Pros&t=ffab&atb=v1-1&ia=web
+MsgBox, 32,,It would be absolutely impossible.
+return

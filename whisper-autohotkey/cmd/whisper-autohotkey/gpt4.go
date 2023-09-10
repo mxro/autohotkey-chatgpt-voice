@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"os"
+	"strings"
 
 	"github.com/sashabaranov/go-openai"
 )
@@ -13,25 +15,35 @@ You create AutoHotKey V1 scripts. I ask you to conduct a certain ACTION.
 You then write a script to perform this action. Note the action should be 
 executed when the AHK script is run, not define a keyboard shortcut to trigger the action. 
 You only respond with the script, don't include any comments, keep it as short as possible 
-but ensure there are no syntax errors in the script and it is a correct AutoHotKey V3 script. 
+but ensure there are no syntax errors in the script and it is a correct AutoHotKey V1 script. 
 Remember tray tips are provided as follows 'TrayTip , Title, Text, Timeout, Options'.
-NEVER provide any other output than the script. 
+NEVER provide any other output than the script. Always complete the action with a 'return'. 
 
 Unless otherwise specified, assume:
 - the default browser is Firefox
 - the default search engine is DuckDuckGo
 - if looking for pictures, open the pexels website
 - when I ask you to 'tell me X', output a script that shows a GUI window using MsgBox that provides the answer to X.
-- if you are not sure what action needs to be taken, create a script that creates a GUI window that says: I cannot understand [command]. Again your output should ONLY be an AutoHotKey script, nothing more.
 - if no specific action is specified, assume a web search for the prompt needs to be conducted
 - Your answer must ALWAYS ONLY be a correct AutoHotKey Script, nothing else
 
-You are also aware of a number of common shortcuts. If a command matches a shortcut, simply create an AutoHotKey script that issues the shortcut. Ensure that commands including the Windows (=Win) key, consider the quirks around sending key presses for this key in windows. For instance, Win + r should result in a script like 'Send {RWin down}r{RWin up}'
+If you are not sure what action needs to be taken or how to create a script to perform the action,
+create a script with the following content:
+> MsgBox, 32,,Sorry I am unsure how to help with: [Action]
+Replace [Action] with the action provided in the prompt.
 
-Shortcut | Command
+Now I will provide the ACTION. Please remember, NEVER respond with ANYTHING ELSE but a valid AutoHotKeyScript.
 					`
 
+	if strings.TrimSpace(prompt) == "" {
+		return "MsgBox, 32,, No input detected! Is your microphone working correctly?", nil
+	}
+
 	c := openai.NewClient(config.OpenapiKey)
+
+	if err := os.WriteFile("prompt.txt", []byte(prompt), 0666); err != nil {
+		return "", err
+	}
 
 	response, err := c.CreateChatCompletion(
 		context.Background(),
@@ -39,12 +51,12 @@ Shortcut | Command
 			Model: openai.GPT4,
 			Messages: []openai.ChatCompletionMessage{
 				{
-					Role:    openai.ChatMessageRoleUser,
-					Content: "ACTION: " + prompt,
-				},
-				{
 					Role:    openai.ChatMessageRoleSystem,
 					Content: systemContext,
+				},
+				{
+					Role:    openai.ChatMessageRoleUser,
+					Content: "ACTION: " + prompt,
 				},
 			},
 		},

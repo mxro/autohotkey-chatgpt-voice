@@ -1,0 +1,11 @@
+version: '3'
+
+tasks:
+  build:
+    dir: whisper-autohotkey
+    cmds:
+      - go build ./cmd/whisper-autohotkey/. 
+  package:
+    deps: [build]
+    cmds:
+      - cmd.exe /c copy /Y ".\whisper-autohotkey\whisper-autohotkey.exe" "."
