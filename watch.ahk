@@ -7,8 +7,5 @@ F8::
 F9::
   Run %A_WorkingDir%\bin\fmedia-1.31-windows-x64\fmedia\fmedia.exe --globcmd=stop,, Hide
   Sleep, 100
-  Run %A_WorkingDir%\whisper-autohotkey.exe,, Hide
+  Run %A_WorkingDir%\bin\whisper-autohotkey\whisper-autohotkey.exe,, Hide
   return
-
-
-  /*Run cmd /k %A_WorkingDir%\whisper-autohotkey.exe,, */

@@ -8,4 +8,4 @@ tasks:
   package:
     deps: [build]
     cmds:
-      - cmd.exe /c copy /Y ".\whisper-autohotkey\whisper-autohotkey.exe" "."
+      - cmd.exe /c copy /Y ".\whisper-autohotkey\whisper-autohotkey.exe" ".\bin\whisper-autohotkey"
