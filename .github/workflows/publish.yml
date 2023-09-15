@@ -1,0 +1,28 @@
+name: Publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    name: Publish 
+    runs-on: ubuntu-latest 
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Create config from template
+      run: cat config.template.json > config.json
+    - uses: vimtor/action-zip@v1
+      with:
+        files: bin/ watch.ahk prompt.txt LICENSE config.template.json config.json
+        recursive: false
+        dest: autohotkey-chatgpt.zip
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: autohotkey-chatgpt.zip 
+        asset_name: autohotkey-chatgpt 
+        tag: ${{ github.ref }}

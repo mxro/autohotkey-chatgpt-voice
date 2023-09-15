@@ -1,3 +1,2 @@
-Clipboard := "Roses are red,`nViolets are blue,`nSugar is sweet,`nAnd so are you."
-Send, ^v
+Run, firefox.exe "https://duckduckgo.com/?q=how`%20to`%20create`%20zip`%20file`%20with`%20github`%20actions"
 return
