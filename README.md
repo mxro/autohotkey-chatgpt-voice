@@ -7,8 +7,13 @@ Use your voice to control Windows 📢
 | Open Firefox               | Opens Firefox                                    |
 | Search for cupcake recipes | Opens browser and searches for 'Cupcake Recipes' |
 | Tell me the first 20 digits of Pi                            | Shows a window with the 20 first digits of Pi                                                 |
+| Paste a poem | Pastes a poem |
 
 ⚠ WARNING ⚠ This is an experimental application. ChatGPT can end up doing random stuff. So please use with caution!
+
+## How does this work?
+
+Check out my blog post: TBD
 
 ## Install
 
@@ -33,6 +38,16 @@ Use your voice to control Windows 📢
 - Wait for Open AI to do its magic
 
 ## Customise
+
+### Trigger Hotkey
+
+The hotkey to start/stop a voice command is defined in `watch.ahk`. You can replace the following with a hotkey of your choice:
+
+```
+F8::
+```
+
+### Prompt
 
 Among the extracted files, there is a `prompt.txt`. You can edit this to customise it to yor own needs.
 

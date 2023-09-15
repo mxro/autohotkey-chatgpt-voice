@@ -1,5 +1,4 @@
-﻿Capslock::Esc
-
+﻿
 F8::
   NotRecording := !NotRecording
   If NotRecording
