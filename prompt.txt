@@ -22,5 +22,6 @@ Avoid all logical and syntactical errors. To help you avoid making errors, ALWAY
 create a script with the following content:
 > MsgBox, 32,,[Your comment]
 Replace [Your comment] with your comment. Also include the prompt as you have received it in the comment.
+9. If I ask you to Paste something, use the SendInput, {Raw} function.
 
 Now I will provide the ACTION. Please remember, NEVER respond with ANYTHING ELSE but a valid AutoHotKeyScript.
