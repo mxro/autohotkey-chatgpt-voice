@@ -27,5 +27,5 @@ jobs:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: autohotkey-chatgpt.zip 
         overwrite: true
-        asset_name: Autohotkey ChatGPT 
+        asset_name: Autohotkey-ChatGPT.zip 
         tag: ${{ github.ref }}
