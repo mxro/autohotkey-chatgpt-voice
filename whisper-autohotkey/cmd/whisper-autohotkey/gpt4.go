@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"math"
 	"os"
 	"strings"
 
@@ -25,6 +26,8 @@ func BuildCommand(config Config, prompt string) (string, error) {
 		context.Background(),
 		openai.ChatCompletionRequest{
 			Model: openai.GPT4,
+			// https://github.com/sashabaranov/go-openai#why-dont-we-get-the-same-answer-when-specifying-a-temperature-field-of-0-and-asking-the-same-question
+			Temperature: math.SmallestNonzeroFloat32,
 			Messages: []openai.ChatCompletionMessage{
 				{
 					Role:    openai.ChatMessageRoleSystem,
