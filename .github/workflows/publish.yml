@@ -8,6 +8,8 @@ on:
 jobs:
   publish:
     name: Publish 
+    permissions:
+      contents: write
     runs-on: ubuntu-latest 
 
     steps:
@@ -24,5 +26,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: autohotkey-chatgpt.zip 
-        asset_name: autohotkey-chatgpt 
+        overwrite: true
+        asset_name: Autohotkey ChatGPT 
         tag: ${{ github.ref }}
