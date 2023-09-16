@@ -35,7 +35,7 @@ Check out my blog post: TBD
 - Press F8
 - Speak into your microphone what you would like to do
 - Press F8
-- Wait for Open AI to do its magic
+- Wait for Open AI and AutoHotKey to do their magic
 
 ## Customise
 

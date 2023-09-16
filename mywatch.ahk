@@ -1,4 +1,10 @@
+#persistent
+
 Capslock::Esc
+
+#s::Send ^s  ; Win + S to Ctrl + S
+#v::Send ^v  ; Win + V to Ctrl + V
+#c::Send ^c  ; Win + C to Ctrl + C
 
 F8::
   NotRecording := !NotRecording
