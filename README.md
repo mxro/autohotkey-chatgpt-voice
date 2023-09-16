@@ -63,6 +63,7 @@ Unless otherwise specified, assume:
 ## Prior Art
 
 - [ChatGPT-AutoHotkey-Utility](https://github.com/kdalanon/ChatGPT-AutoHotkey-Utility): Uses AutoHotKey to perform a number of actions, such as translate
+- [ChatGPT Voice Assistant](https://github.com/DonGuillotine/chatGPT_whisper_AI_voice_assistant)
 
 ## Develop
 
