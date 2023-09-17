@@ -34,7 +34,20 @@ func main() {
 		log.Fatal("Please provide your OpenAI key in the file config.json")
 	}
 
-	text, err := Transcribe(config)
+	argLength := len(os.Args[1:])
+	inputFileName := "rec.mp3"
+	if argLength > 0 {
+		inputFileName = os.Args[1:][0]
+		log.Println("Processing file " + inputFileName)
+		stats, err := os.Stat(inputFileName)
+		if errors.Is(err, os.ErrNotExist) {
+			log.Fatal("Input file does not exist")
+		} else {
+			log.Printf("File size %v", stats.Size())
+		}
+	}
+
+	text, err := Transcribe(inputFileName, config)
 	if err != nil {
 		log.Fatal("Cannot transcribe text: ", err)
 		return
